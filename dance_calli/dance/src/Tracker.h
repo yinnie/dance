@@ -15,7 +15,7 @@ public:
 	
 	void setup(const ofxBvhJoint *o){
 		joint = o;
-		trackerLength = 170;
+		trackerLength = 200;
 	}
 	
 	void setTrackerLength(int trackerLen) {
@@ -61,7 +61,7 @@ public:
 				mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
 				//glPointSize(4);
 				
-				for(int i = 1; i < points.size(); i++){
+				for(int i = 1; i < length; i++){
 					
 					//find this point and the next point
 					ofVec3f thisPoint = points[i];
