@@ -23,6 +23,7 @@ class testApp : public ofBaseApp{
 	ofEasyCam camera;
 	
 	vector<Tracker*> trackers;
+	vector<Tracker*> trackers2;
 	
 	vector<ofMesh> meshes;
 		

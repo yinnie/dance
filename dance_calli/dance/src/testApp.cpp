@@ -25,30 +25,28 @@ void testApp::setup() {
 	// setup tracker
 	for (int i = 0; i < 3; i++)
 	{
-		ofxBvh &b = bvh[i];
-		
+		ofxBvh &b = bvh[i];  //why use '&' here???		
 		//for (int n = 0; n < b.getNumJoints(); n++) {
 		//	const ofxBvhJoint *o = b.getJoint(n);
+		
 	    const ofxBvhJoint *o = b.getJoint("RightWrist");
-
 			Tracker *t = new Tracker;
 			t->setup(o);
-			//t->setTrackerLength(trackerLength);
-		trackers.push_back(t);
-		/*
-		const ofxBvhJoint *m = b.getJoint("Head");
+		    t->setStartY(-58);
+		    t->setStartX(-250);
+			trackers.push_back(t);
+		
+		const ofxBvhJoint *m = b.getJoint("LeftWrist");
 		Tracker *q = new Tracker;
 		q->setup(m);
-		q->setTrackerLength(trackerLength);
-			trackers.push_back(q);
-		 */
-		//}
+		q->setStartY(22);
+		q->setStartX(-500);
+		trackers2.push_back(q);
 	}
 	
 	camera.setFov(45);
 	camera.setDistance(360);
-	camera.disableMouseInput();
-	
+	camera.disableMouseInput();	
 	//background.loadImage("background.png");
 	
 }
@@ -63,6 +61,9 @@ void testApp::update()
 	bvh[1].update();
 	for (int i=0; i<trackers.size(); i++) {
 		trackers[i]->update();
+	}
+	for (int i=0; i<trackers2.size(); i++) {
+		trackers2[i]->update();
 	}
 	 
 }
@@ -90,14 +91,27 @@ void testApp::draw(){
 	ofPopMatrix();
 	
 	ofPushMatrix();
-		ofTranslate(-100, -130);
+		ofTranslate(-100, -100);
 		ofRotate(rotate, 0, 1, 0);
 		ofScale(0.85, 0.85, 0.85);
 		//ofSetColor(ofColor::white, 80);
 		for (int i = 0; i < trackers.size(); i++){
 			trackers[i]->draw();
 		}
+	   
     ofPopMatrix();
+	
+	ofPushMatrix();
+	ofTranslate(100, -130);
+	ofRotate(rotate, 0, 1, 0);
+	ofScale(0.85, 0.85, 0.85);
+	//ofSetColor(ofColor::white, 80);
+	for (int i = 0; i < trackers2.size(); i++){
+		trackers2[i]->draw();
+	}
+	
+    ofPopMatrix();
+	
 	
 	camera.end();
 

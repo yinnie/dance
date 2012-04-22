@@ -12,6 +12,8 @@ public:
 	int trackerLength;
 	vector<ofMesh> meshes;
 	deque<ofVec3f> pointsLong;
+	int startY;  //y position to start characters
+	int startX;  //x position to start characters
 	
 	void setup(const ofxBvhJoint *o){
 		joint = o;
@@ -21,10 +23,16 @@ public:
 	void setTrackerLength(int trackerLen) {
 		trackerLength = trackerLen;
 	}
+	void setStartY (int _startY) {
+		startY = _startY;
+	}
+	void setStartX (int _startX) {
+		startX = _startX;
+	}
 	
 	void update() {
 		const ofVec3f &p = joint->getPosition();
-		
+		//points for drawing the vertical calligraphy
 		if(points.empty()) {
 			points.push_front(joint->getPosition());
 		}
@@ -41,7 +49,7 @@ public:
 			}
 		}
 		
-		
+		//points for drawing individual characters
 		if(pointsLong.empty()) {
 			pointsLong.push_front(joint->getPosition());
 		}
@@ -53,10 +61,10 @@ public:
 				pointsLong[i].y+=1;
 			}
 			
-			int length = trackerLength*0.5;
+			int length = trackerLength*0.5; //this determines the size of the individual 'character' drawn
 			
 		    if (pointsLong.size()%length==0) {
-				//make a mesh from the 200 points and save it into an array of meshes
+				//make a mesh from the points and save it into an array of meshes
 				ofMesh mesh;
 				mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
 				//glPointSize(4);
@@ -152,12 +160,13 @@ public:
 		//end the shape
 		mesh.draw();
 		
+		//draw the individual characters
 		if (meshes.empty()) return;
 		if (!meshes.empty()) {
 		
 			for (int i=0; i<meshes.size(); i++) {
 				ofPushMatrix();
-				ofTranslate(-250+i*20,100);
+				ofTranslate(startX+i*20,startY);
 				ofRotate(0, 0, 1, 0);
 				ofScale(0.3, 0.3, 0.3);
 				ofSetColor(ofColor::white);
