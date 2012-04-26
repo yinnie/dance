@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxBvh.h"
 #include "Tracker.h"
+#include "ofxFX.h"
 
 
 class testApp : public ofBaseApp{
@@ -24,9 +25,13 @@ class testApp : public ofBaseApp{
 	
 	vector<Tracker*> trackers;
 	vector<Tracker*> trackers2;
-	vector<Tracker*> trackersAll;
 	
 	vector<ofMesh> meshes;
-	int mode;
+	
+	//fluid shader
+	ofxFluid fluid;
+	ofVec2f oldM;
+    bool    bPaint, bObstacle, bBounding, bClear;
+	ofImage image;
 		
 };

@@ -4,8 +4,9 @@
 
 //--------------------------------------------------------------
 void testApp::setup() {
-	//ofSetFrameRate(60);
+	ofSetFrameRate(60);
 	ofSetVerticalSync(true);
+	ofBackground(255);
 		
 	rotate = 0;
 	
@@ -17,38 +18,38 @@ void testApp::setup() {
 	for (int i = 0; i < 3; i++)	{
 		bvh[i].play();
 	}
-	
-	//track.loadSound("Perfume_globalsite_sound.wav");
-//   track.play();
-//   track.setLoop(true);
-	
 	// setup tracker
 	for (int i = 0; i < 3; i++)
 	{
-		ofxBvh &b = bvh[i];  //why use '&' here???		
-		//for (int n = 0; n < b.getNumJoints(); n++) {
-		//	const ofxBvhJoint *o = b.getJoint(n);
+		ofxBvh &b = bvh[i];  
 		
-	    const ofxBvhJoint *o = b.getJoint("RightWrist");
-			Tracker *t = new Tracker;
-			t->setup(o);
-		    t->setStartY(-58);
-		    t->setStartX(-250);
-			trackers.push_back(t);
+		const ofxBvhJoint *o = b.getJoint("RightWrist");
+		Tracker *t = new Tracker;
+		t->setup(o);
+		t->setStartY(120);
+		t->setStartX(-100);
+		trackers.push_back(t); //because trackers is a vector array of type <Tracker *> , here we can pushback on t instead of *t
 		
 		const ofxBvhJoint *m = b.getJoint("LeftWrist");
 		Tracker *q = new Tracker;
 		q->setup(m);
-		q->setStartY(22);
-		q->setStartX(-500);
+		q->setStartY(150);
+		q->setStartX(50);
 		trackers2.push_back(q);
+			
+		for (int n = 0; n < b.getNumJoints(); n++) {
+		  const ofxBvhJoint *l = b.getJoint(n);
+		  Tracker *s = new Tracker;
+		  s->setup(l);
+		  trackersAll.push_back(s);   //adding to array of all joints
+		}
 	}
 	
 	camera.setFov(45);
-	camera.setDistance(360);
+	camera.setDistance(500);
 	camera.disableMouseInput();	
-	//background.loadImage("background.png");
 	
+	mode =0;	
 }
 
 //--------------------------------------------------------------
@@ -58,63 +59,88 @@ void testApp::update()
 //		bvh[i].update();
 //	}
 	
+	
 	bvh[1].update();
+	
 	for (int i=0; i<trackers.size(); i++) {
-		trackers[i]->update();
+		if(trackers[i] == NULL) {cout << "Not init\n";}
+		trackers[i]->update();  //use '->' becoz trackers is a vector of pointers
 	}
 	for (int i=0; i<trackers2.size(); i++) {
 		trackers2[i]->update();
 	}
-	 
+	for (int i=0; i<trackersAll.size(); i++) {
+		trackersAll[i]->update();
+	}
+	
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofBackgroundHex(0x000000);
-	//ofSetHexColor(0xffffff);
-	//background.draw(0,0,ofGetWidth(),ofGetHeight());
+	//glEnable(GL_DEPTH_TEST);
 	
-	glEnable(GL_DEPTH_TEST);
-	
+	ofSetColor(0);
 	camera.begin();
+	
+	if (mode == 0) {   //dancing mode
+
 	ofPushMatrix();
-		ofTranslate(0, -80);
+		ofTranslate(40, -80);
 		ofRotate(rotate, 0, 1, 0);
-		ofScale(1, 1, 1);
-		// draw bvh
-		glDisable(GL_DEPTH_TEST);
-		ofEnableBlendMode(OF_BLENDMODE_ADD);		
-		//for (int i=0; i<3; i++) {
-//			bvh[0].draw();
-//		}		
-		bvh[1].draw();
+		ofScale(1, 1, 1);		
+		//bvh[1].draw();
+	for (int i = 0; i < trackersAll.size()-1; i++){
+		const ofVec3f &p = trackersAll[i]->joint->getPosition();
+		const ofVec3f &q = trackersAll[i+1]->joint->getPosition();
+		ofSetLineWidth(1.4);
+		ofLine(p.x, p.y, q.x, q.y);
+	}
 	ofPopMatrix();
 	
 	ofPushMatrix();
-		ofTranslate(-100, -100);
+		ofTranslate(-100, -150);
 		ofRotate(rotate, 0, 1, 0);
-		ofScale(0.85, 0.85, 0.85);
-		//ofSetColor(ofColor::white, 80);
+		ofScale(0.7, 0.7, 0.7);
 		for (int i = 0; i < trackers.size(); i++){
 			trackers[i]->draw();
 		}
-	   
     ofPopMatrix();
 	
 	ofPushMatrix();
-	ofTranslate(100, -130);
+	ofTranslate(140, -40);
 	ofRotate(rotate, 0, 1, 0);
-	ofScale(0.85, 0.85, 0.85);
-	//ofSetColor(ofColor::white, 80);
+	ofScale(0.7, 0.7, 0.7);
 	for (int i = 0; i < trackers2.size(); i++){
 		trackers2[i]->draw();
-	}
-	
+	}	
     ofPopMatrix();
 	
+	}  
 	
-	camera.end();
+	
+	if (mode == 1) {   //script mode
+		
+		ofPushMatrix();
+		ofTranslate(-195, -65);
+		ofRotate(rotate, 0, 1, 0);
+		ofScale(0.7, 0.7, 0.7);
+		for (int i = 0; i < trackers.size(); i++){
+			trackers[i]->draw1();
+		}	
+		ofPopMatrix();
+		
+		
+		ofPushMatrix();
+		ofTranslate(400, -60);
+		ofRotate(rotate, 0, 1, 0);
+		ofScale(0.7, 0.7, 0.7);
+		for (int i = 0; i < trackers2.size(); i++){
+			trackers2[i]->draw2();
+		}	
+		ofPopMatrix();
+	}
 
+	camera.end();
 }
 
 void testApp::exit(){
@@ -123,8 +149,9 @@ void testApp::exit(){
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-	if (key == 'f') {
-		ofToggleFullscreen();
+	
+	if (key == ' ') {
+		mode++;
 	}
 }
 

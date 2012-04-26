@@ -17,7 +17,7 @@ public:
 	
 	void setup(const ofxBvhJoint *o){
 		joint = o;
-		trackerLength = 250;
+		trackerLength = 200;
 	}
 	
 	void setTrackerLength(int trackerLen) {
@@ -60,9 +60,8 @@ public:
 			for (int i = 0; i < pointsLong.size() - 1; i++){
 				pointsLong[i].y+=1;
 			}
-		
-			//int length = trackerLength*0.5; //this determines the size of the individual 'character' drawn
-			int length = 100;
+			
+			int length = trackerLength*0.5; //this determines the size of the individual 'character' drawn
 			
 		    if (pointsLong.size()%length==0) {
 				//make a mesh from the points and save it into an array of meshes
@@ -107,19 +106,17 @@ public:
 				}
 				
 				meshes.push_back(mesh);
-				
 			}
 		}
 		
 	}
 	void draw()	{
-		cout << "point count " << pointsLong.size() << endl;
+		cout << "point count " << points.size() << endl;
 		
 		if (points.empty()) return;
 	    
-		//draw the 3D line
-		ofSetColor(0);
-		
+	    //draw the 3D line
+		ofSetColor(255);
 		ofMesh mesh;
 		mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
 		//glPointSize(4);
@@ -165,114 +162,18 @@ public:
 		
 		//draw the individual characters
 		if (meshes.empty()) return;
+		if (!meshes.empty()) {
 		
-		/*
-		//draw vertically
-		if (meshes.size() > 2) {
-			for (int i = 3; i<meshes.size(); i++) {
+			for (int i=0; i<meshes.size(); i++) {
 				ofPushMatrix();
-				ofTranslate(-150,400-i*30);
+				ofTranslate(startX+i*20,startY);
 				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
+				ofScale(0.3, 0.3, 0.3);
 				ofSetColor(ofColor::white);
 				meshes[i].draw();
 				ofPopMatrix();
-			}
+				}
 		}
-		*/
-		 //draw the last character
-			for (int i = 4; i < meshes.size(); i++) {
-				ofPushMatrix();
-				ofTranslate(startX,startY);
-				ofRotate(0, 0, 1, 0);
-				ofScale(0.7, 0.7, 0.7);
-				meshes[meshes.size()-1].draw();
-				ofPopMatrix();
-			}
-	}
-	
-	void drawAll() {
-		//draw the individual characters
-		ofSetColor(0);
-		
-		if (meshes.empty()) return;
-		if (!meshes.empty()) {
-			
-			for (int i=0; i<meshes.size(); i++) {
-			ofPushMatrix();
-			ofTranslate(-250+i*20,22);
-			ofTranslate(0,0);
-			ofRotate(0, 0, 1, 0);
-			ofScale(0.7, 0.7, 0.7);
-			meshes[i].draw();
-			ofPopMatrix();
-			}
-		}
-					
-	}
-	void draw1() {
-		//draw the individual characters
-		if (meshes.empty()) return;
-		
-		ofSetColor(0);
-		//draw vertically
-		if (meshes.size() > 2 && meshes.size() < 20) {
-			
-			for (int i=3; i< meshes.size(); i++) {
-				ofPushMatrix();
-				ofTranslate(-150,400-i*30);
-				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
-				meshes[i].draw();
-				ofPopMatrix();
-			}
-		}
-		if (meshes.size() > 19 ) {
-			for (int i=3; i< 19; i++) {
-				ofPushMatrix();
-				ofTranslate(-150,400-i*30);
-				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
-				meshes[i].draw();
-				ofPopMatrix();
-			}			
-			for (int i=20; i<meshes.size(); i++) {
-				ofPushMatrix();
-				ofTranslate(-120,400-(i-9)*30);
-				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
-				meshes[i].draw();
-				ofPopMatrix();
-			}
-		}
-		
-	}
-	void draw2() {
-		//draw the individual characters
-		ofSetColor(0);
-		
-		if (meshes.empty()) return;
-		if (meshes.size() > 2 && meshes.size() < 13) {
-			for (int i = 3; i<meshes.size(); i++) {
-				ofPushMatrix();
-				ofTranslate(-150,400-i*30);
-				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
-				meshes[i].draw();
-				ofPopMatrix();
-			}
-		}
-		if (meshes.size() > 12 ) {
-			for (int i = 13; i<meshes.size(); i++) {
-				ofPushMatrix();
-				ofTranslate(-100,400-i*30);
-				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
-				meshes[i].draw();
-				ofPopMatrix();
-			}
-		}
-		
 		
 	}
 	
