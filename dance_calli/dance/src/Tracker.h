@@ -14,6 +14,8 @@ public:
 	deque<ofVec3f> pointsLong;
 	int startY;  //y position to start characters
 	int startX;  //x position to start characters
+	int xPos;     // x position to draw the last character
+	int yPos;
 	
 	void setup(const ofxBvhJoint *o){
 		joint = o;
@@ -162,28 +164,16 @@ public:
 		
 		//end the shape
 		mesh.draw();
-		
+	}
+	
+	void drawLast(int xPos, int yPos) {
 		//draw the individual characters
 		if (meshes.empty()) return;
 		
-		/*
-		//draw vertically
-		if (meshes.size() > 2) {
-			for (int i = 3; i<meshes.size(); i++) {
-				ofPushMatrix();
-				ofTranslate(-150,400-i*30);
-				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
-				ofSetColor(ofColor::white);
-				meshes[i].draw();
-				ofPopMatrix();
-			}
-		}
-		*/
-		 //draw the last character
+		//draw the last character
 			for (int i = 4; i < meshes.size(); i++) {
 				ofPushMatrix();
-				ofTranslate(startX,startY);
+				ofTranslate(xPos, yPos);
 				ofRotate(0, 0, 1, 0);
 				ofScale(0.7, 0.7, 0.7);
 				meshes[meshes.size()-1].draw();
@@ -216,34 +206,35 @@ public:
 		
 		ofSetColor(0);
 		//draw vertically
-		if (meshes.size() > 2 && meshes.size() < 20) {
-			
-			for (int i=3; i< meshes.size(); i++) {
+		if (meshes.size() > 0) {
+	
+			for (int i = 3; i < 10; i++) {
 				ofPushMatrix();
-				ofTranslate(-150,400-i*30);
+				ofTranslate(-60,-i*50);
 				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
-				meshes[i].draw();
-				ofPopMatrix();
-			}
-		}
-		if (meshes.size() > 19 ) {
-			for (int i=3; i< 19; i++) {
-				ofPushMatrix();
-				ofTranslate(-150,400-i*30);
-				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
+				ofScale(0.5, 0.5, 0.5);
 				meshes[i].draw();
 				ofPopMatrix();
 			}			
-			for (int i=20; i<meshes.size(); i++) {
+			for (int i = 10; i < 19; i++) {
 				ofPushMatrix();
-				ofTranslate(-120,400-(i-9)*30);
+				ofTranslate(-140,-(i-9)*50);
 				ofRotate(0, 0, 1, 0);
-				ofScale(0.35, 0.35, 0.35);
+				ofScale(0.5, 0.5, 0.5);
 				meshes[i].draw();
 				ofPopMatrix();
 			}
+			for (int i = 19; i < meshes.size(); i++) {
+				ofPushMatrix();
+				ofTranslate(-190,-(i-17)*50);
+				ofRotate(0, 0, 1, 0);
+				ofScale(0.5, 0.5, 0.5);
+				meshes[i].draw();
+				ofPopMatrix();
+			}
+			
+		    
+			
 		}
 		
 	}
@@ -252,6 +243,36 @@ public:
 		ofSetColor(0);
 		
 		if (meshes.empty()) return;
+		
+		if (meshes.size() > 2 ) {
+			
+			for (int i = 3; i < 10; i++) {
+				ofPushMatrix();
+				ofTranslate(-150,-i*50);
+				ofRotate(0, 0, 1, 0);
+				ofScale(0.5, 0.5, 0.5);
+				meshes[i].draw();
+				ofPopMatrix();
+			}			
+			for (int i = 10; i < 19; i++) {
+				ofPushMatrix();
+				ofTranslate(-230,-(i-9)*50);
+				ofRotate(0, 0, 1, 0);
+				ofScale(0.5, 0.5, 0.5);
+				meshes[i].draw();
+				ofPopMatrix();
+			}
+			for (int i = 19; i < meshes.size(); i++) {
+				ofPushMatrix();
+				ofTranslate(-280,-(i-17)*50);
+				ofRotate(0, 0, 1, 0);
+				ofScale(0.5, 0.5, 0.5);
+				meshes[i].draw();
+				ofPopMatrix();
+			}
+		}
+		
+		/*
 		if (meshes.size() > 2 && meshes.size() < 13) {
 			for (int i = 3; i<meshes.size(); i++) {
 				ofPushMatrix();
@@ -272,7 +293,7 @@ public:
 				ofPopMatrix();
 			}
 		}
-		
+		*/
 		
 	}
 	

@@ -85,35 +85,41 @@ void testApp::draw(){
 	if (mode == 0) {   //dancing mode
 
 	ofPushMatrix();
-		ofTranslate(40, -80);
+		ofTranslate(-220, -150);
 		ofRotate(rotate, 0, 1, 0);
 		ofScale(1, 1, 1);		
 		//bvh[1].draw();
-	for (int i = 0; i < trackersAll.size()-1; i++){
-		const ofVec3f &p = trackersAll[i]->joint->getPosition();
-		const ofVec3f &q = trackersAll[i+1]->joint->getPosition();
+	for (int i = 1; i < trackersAll.size()-1; i++){
+		const ofVec3f &p = trackersAll[i-1]->joint->getPosition();
+		const ofVec3f &q = trackersAll[i]->joint->getPosition();
 		ofSetLineWidth(1.4);
 		ofLine(p.x, p.y, q.x, q.y);
 	}
 	ofPopMatrix();
 	
 	ofPushMatrix();
-		ofTranslate(-100, -150);
+		ofTranslate(-30, -150);
 		ofRotate(rotate, 0, 1, 0);
-		ofScale(0.7, 0.7, 0.7);
+		ofScale(0.85, 0.85, 0.85);
 		for (int i = 0; i < trackers.size(); i++){
 			trackers[i]->draw();
+			trackers[i]->drawLast(80,-60);
 		}
     ofPopMatrix();
 	
 	ofPushMatrix();
-	ofTranslate(140, -40);
+	ofTranslate(165, -40);
 	ofRotate(rotate, 0, 1, 0);
-	ofScale(0.7, 0.7, 0.7);
+	ofScale(0.85, 0.85, 0.85);
 	for (int i = 0; i < trackers2.size(); i++){
 		trackers2[i]->draw();
+		trackers2[i]->drawLast(70,-175);
 	}	
     ofPopMatrix();
+		
+		ofNoFill();
+		ofRect(-20, -155, 100, 100);
+		ofRect(170, -155, 100, 100);
 	
 	}  
 	
@@ -121,9 +127,9 @@ void testApp::draw(){
 	if (mode == 1) {   //script mode
 		
 		ofPushMatrix();
-		ofTranslate(-195, -65);
+		ofTranslate(80, 210);
 		ofRotate(rotate, 0, 1, 0);
-		ofScale(0.7, 0.7, 0.7);
+		ofScale(1, 1, 1);
 		for (int i = 0; i < trackers.size(); i++){
 			trackers[i]->draw1();
 		}	
@@ -131,10 +137,10 @@ void testApp::draw(){
 		
 		
 		ofPushMatrix();
-		ofTranslate(400, -60);
+		ofTranslate(410, 240);
 		ofRotate(rotate, 0, 1, 0);
-		ofScale(0.7, 0.7, 0.7);
-		for (int i = 0; i < trackers2.size(); i++){
+		ofScale(1, 1, 1);
+	    for (int i = 0; i < trackers2.size(); i++){
 			trackers2[i]->draw2();
 		}	
 		ofPopMatrix();
